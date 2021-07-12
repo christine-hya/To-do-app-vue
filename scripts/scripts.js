@@ -4,25 +4,27 @@ let myVue = new Vue({
         newItem: '',
         newDate: '',
         todoList: JSON.parse(localStorage.getItem('TODOS')) 
-        || [{label: 'Learn to code', date: this.newDate, hasDate: false, isComplete: false, status: 'to do'},
-        {label: 'Learn vue', date: this.newDate, hasDate: false, isComplete: false, status: 'in progress'}],
-        state: 'default',
+        || [],
+        state: 'showDateButton',
         editedTask: null,
-        disabled: true,
+        isDisabled: true,
         date: null,
         availableCategories: ['low', 'medium', 'high'],
     },
     methods: {
             saveItem : function(){
-                if(this.newItem.length === 0) return;
+                if(this.newItem.length === 0) 
+                return ;
+                
                 this.todoList.push ({
                     label: this.newItem,
                     date: '',
                     hasDate: false,
                     isComplete: false,  
-                    status: 'set priority'             
+                    status: 'set priority',                             
                     })
                 this.newItem = '';
+                this.changeState('showDateButton');                
             },
 
             toggleComplete : function(item){
@@ -47,9 +49,9 @@ let myVue = new Vue({
             },
 
             startEditingTask : function(item) {
-                
+              this.isDisabled = !this.isDisabled;
                 this.editedTask = item;
-                this.disabled = !this.disabled;
+               
               
                  },
             
@@ -59,7 +61,7 @@ let myVue = new Vue({
                     this.editedTask.label = textbox.value;
                     this.editedTask.label = textbox.value.trim();
                     this.editedTask = null;
-                    this.disabled = !this.disabled;
+                    // this.isDisabled = !this.isDisabled;
                     
                   },    
 
@@ -89,8 +91,14 @@ let myVue = new Vue({
         },
         completedTodos() {
             return this.todoList.filter(task => task.isComplete);
+          },
+          warningClasses() {
+            return{
+            'border' : this.newItem.length===0,
+            'border-danger' : this.newItem.length===0,
+            'border-4' : this.newItem.length===0,
           }
-
+        }
       },
 
       watch: {
