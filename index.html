@@ -44,6 +44,39 @@
         <div id="date"></div>
         <h4 class="text-center">My Tasks</h4>
 
+        <!--navbar-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Priority</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" 
+                    aria-current="page" 
+                    href="#"
+                    @click="getList(workTodos)"
+                    >Work</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Private</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Exercise</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" 
+                    href="#"
+                    @click="displayAll"
+                    >All</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
     </div>
 
 
@@ -72,6 +105,7 @@
                 
                         <div class="col-3"  
                         :class="{complete : item.isComplete}">
+
                         <!--TASK DISPLAY-->
                            <input type="text" 
                            class="mx-0 todo-style form-control-sm float-start" 
@@ -86,15 +120,26 @@
                           >  
                         </div>
 
-                        <!--CATEGORY-->
-                          <div class="col-3">
+                        <!--PRIORITY-->
+                          <div class="col-2">
                             <span class="pointer"
                           
-                            @click="changeStatus(index)">{{firstCharUpper(item.status)}}</span>
+                            @click="changeStatus(index)">{{item.status}}</span>
+                          </div>
+
+                          <!--CATEGORY-->
+                          <div class="col-2">
+
+                            <span 
+                            class="pointer"
+                            @click="changeCategory(index)">
+                              {{item.category}}
+                            </span>
+
                           </div>
                          
                          <!--DATE PICKER-->
-                          <div class="col-3"> 
+                          <div class="col-2"> 
 
                             <input v-model.lazy="newDate"                                     
                             type="date" name="due-date" 
@@ -131,40 +176,39 @@
             
             </div>
                 </li>
-
             </ul>
         </div>
 
-        <!--add-to-do section-->
-        <div class="add-to-do mx-auto container-fluid">
+      <!--add-to-do section-->
+      <div class="add-to-do mx-auto container-fluid">
            
-            <div class="row mx-auto">
+        <div class="row mx-auto">
 
-                <div class="col-1"></div>
+            <div class="col-1"></div>
 
-                <div class="col-8">
-                    <!--taskinput-->
-                    <input type="text" id="addTask" 
-                
-                    class="input-style mx-auto form-control" 
-                    v-model="newItem" 
-                    v-on:keyup.enter="[saveItem($event), warningClasses]">
-                  
-                </div>
-
-                <div class="col-2 my-auto">
-                    <button @click="saveItem" :disabled="newItem.length===0" class="button-plus p-2">
-                        <i class="fas fa-plus white-plus"></i>
-                    </button>
-                </div>
-
-                <div class="col-1"></div>
-
+            <div class="col-8">
+                <!--taskinput-->
+                <input type="text" id="addTask" 
+            
+                class="input-style mx-auto form-control" 
+                v-model="newItem" 
+                v-on:keyup.enter="[saveItem($event), warningClasses]">
+              
             </div>
+
+            <div class="col-2 my-auto">
+                <button @click="saveItem" :disabled="newItem.length===0" class="button-plus p-2">
+                    <i class="fas fa-plus white-plus"></i>
+                </button>
+            </div>
+
+            <div class="col-1"></div>
 
         </div>
 
     </div>
+
+</div>
 
     <script src="https://unpkg.com/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

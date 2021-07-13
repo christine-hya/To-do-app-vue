@@ -22,15 +22,13 @@ body {
     width: 480px;
     height: 150px;
     right: 2.5%;
-    color: white;
-    background-color: #218380;
     padding: 3%;
     margin: 0 auto;
     margin-top: 10px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px; 
-    box-shadow: h-offset v-offset blur color;
-    box-shadow: 0 0 2px #218380;   
+    /* box-shadow: h-offset v-offset blur color;
+    box-shadow: 0 0 2px #218380;    */
 }
 
 .remaining-tasks {
@@ -51,7 +49,6 @@ body {
     height: 650px;
     margin: 0 auto;
     margin-bottom: 10px;
-    background-color: rgb(245, 237, 237);  
     text-align: center;   
     border: none;   
     box-shadow: h-offset v-offset blur color;
@@ -84,13 +81,13 @@ body {
     padding: 5%;
     left: 13%;
     margin: 0 auto;   
-    background-color: #8F2D56;
+    background-color:  #218380;
     border-radius: 5px;  
     border-radius: 15px;
     align-items: center;
     vertical-align: middle;
     box-shadow: h-offset v-offset blur color;
-    box-shadow: 0 0 3px #833958;
+    /* box-shadow: 0 0 3px #833958; */
 }
 
 ul {
@@ -157,20 +154,20 @@ i {
 }
 
 .button-plus {
-    background-color: #218380;
+    background-color: #FBB13C; 
     border-radius: 50%;
     border: none;
     box-shadow: h-offset v-offset blur color;
-    box-shadow: 0 0 3px #218380; 
+    box-shadow: 0 0 3px #FBB13C; 
     text-align: center;
     width: 40px;
     height: 40px;
 }
 
 .button-plus:hover {
-    background-color: #FBB13C;  
+    background-color: #218380;  
     box-shadow: h-offset v-offset blur color;
-    box-shadow: 0 0 2px #FBB13C; 
+    box-shadow: 0 0 2px #218380; 
 }
 
 .white-plus {
