@@ -10,7 +10,7 @@ let myVue = new Vue({
         isDisabled: true,
         date: null,
         availablePriorities: ['low', 'medium', 'high'],
-        availableCategories: ['work', 'private', 'exercise']
+        availableCategories: ['work', 'private', 'exercise', 'select']
     },
     methods: {
             saveItem : function(){
@@ -94,17 +94,24 @@ let myVue = new Vue({
               const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(duedate);
               const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(duedate);
               duedate = `${da} ${mo}`;
+            }, 
+
+            sortAbc : function () {
+              this.todoList.sort((a, b) => a.label.localeCompare(b.label));
+              console.log(this.todoList);
             },
 
-            displayWorkTodos : function () {
-              
-              return this.todoList.filter(task => task.category === 'work');
-            },
+            
+            orderedByPriority: function () {
 
-            displayAll : function () {
-              this.todoList = this.todoList;
-            }
-          
+            let priorities = {'high' : 0, 
+            'medium' : 1,
+            'low' : 2,}
+
+            this.todoList.sort((a, b) =>
+            priorities[a.status] - priorities[b.status]);
+             
+            },         
     },
     
     computed: {
@@ -115,17 +122,13 @@ let myVue = new Vue({
             return this.todoList.filter(task => task.isComplete);
           },
 
-        workTodos() {
-        return this.todoList.filter(task => task.category === 'work');
-         }, 
-
-        privateTodos() {
-          return this.todoList.filter(task => task.category === 'private');
-        },
-
-        exerciseTodos() {
-          return this.todoList.filter(task => task.category === 'exercise');
-        },
+         filtered: function () {
+           let availableCategories = this.availableCategories;
+           return this.todoList.filter(function(item) {
+             return availableCategories.indexOf(item.category) >= 0;
+           });
+           
+         },    
 
         warningClasses() {
             return{

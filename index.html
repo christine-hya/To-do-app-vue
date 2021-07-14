@@ -33,7 +33,9 @@
 
             <div class="col-sm-1 col-1 ms-2">
                 <button class="button-sort-clear" 
-                v-if="todoList.length">
+                v-if="todoList.length"
+                @click="sortAbc"
+                >
                     <i class="fas fa-sort-alpha-down"></i>
                 </button>
             </div>
@@ -45,9 +47,12 @@
         <h4 class="text-center">My Tasks</h4>
 
         <!--navbar-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <nav class="navbar navbar-expand navbar-light bg-white">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">Priority</a>
+              <a class="navbar-brand" 
+              href="#"
+              @click="orderedByPriority"
+              >Priority</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -57,19 +62,23 @@
                     <a class="nav-link active" 
                     aria-current="page" 
                     href="#"
-                    @click="getList(workTodos)"
+                   @click="availableCategories=['work']"
                     >Work</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Private</a>
+                    <a class="nav-link" 
+                    href="#" 
+                    @click="availableCategories=['private']">Private</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Exercise</a>
+                    <a class="nav-link" 
+                    href="#" 
+                    @click="availableCategories=['exercise']">Exercise</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" 
                     href="#"
-                    @click="displayAll"
+                    @click="availableCategories=['work', 'private', 'exercise', 'select']"
                     >All</a>
                   </li>
                 </ul>
@@ -85,13 +94,12 @@
             <strong>{{ activeTodos.length }}</strong> remaining task(s) 
         </span>
 
-        
-
+        <!--TO-DO LIST-->
         <div class="todo-list mx-0">
             <ul id="list">
 
-                <!--to-do list-->
-<li  v-for="(item, index) in todoList" :key="index">
+                
+<li  v-for="(item, index) in filtered" :key="index">
                     <div class="row mx-auto p-1" 
                     :class="[{priority : item.status === 'high'}, 
                     {medium : item.status === 'medium'}, {low : item.status === 'low'}]">
@@ -102,11 +110,12 @@
                             class="custom-checkbox" 
                             @click="toggleComplete(item)">       
                         </div>
-                
+
+                         <!--TASK DISPLAY-->  
                         <div class="col-3"  
                         :class="{complete : item.isComplete}">
 
-                        <!--TASK DISPLAY-->
+                       
                            <input type="text" 
                            class="mx-0 todo-style form-control-sm float-start" 
                            :value="item.label"
@@ -161,7 +170,8 @@
                         </button> 
 
                         </div>
-               
+
+                        <!--DELETE-->
                         <div class="col-1">
                           <button :class="[{priority : item.status === 'high'}, 
                           {medium : item.status === 'medium'}, {low : item.status === 'low'}]" 
@@ -179,7 +189,9 @@
             </ul>
         </div>
 
-      <!--add-to-do section-->
+      
+
+      <!--ADD-TO-DO SECTION-->
       <div class="add-to-do mx-auto container-fluid">
            
         <div class="row mx-auto">
@@ -187,7 +199,7 @@
             <div class="col-1"></div>
 
             <div class="col-8">
-                <!--taskinput-->
+                <!--TASKINPUT-->
                 <input type="text" id="addTask" 
             
                 class="input-style mx-auto form-control" 
