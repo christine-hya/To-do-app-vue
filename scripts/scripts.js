@@ -100,9 +100,8 @@ let myVue = new Vue({
               this.todoList.sort((a, b) => a.label.localeCompare(b.label));
               console.log(this.todoList);
             },
-
-            
-            orderedByPriority: function () {
+           
+            orderByPriority: function () {
 
             let priorities = {'high' : 0, 
             'medium' : 1,
@@ -111,7 +110,12 @@ let myVue = new Vue({
             this.todoList.sort((a, b) =>
             priorities[a.status] - priorities[b.status]);
              
-            },         
+            },   
+            
+            clearTasks: function () {
+              localStorage.clear();
+              location.reload();
+          }
     },
     
     computed: {
@@ -128,7 +132,7 @@ let myVue = new Vue({
              return availableCategories.indexOf(item.category) >= 0;
            });
            
-         },    
+        },    
 
         warningClasses() {
             return{
