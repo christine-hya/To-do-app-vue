@@ -2,250 +2,236 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, height=device-height, minimum-scale=1, initial-scale=1.0">
-    <title>To-do app</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/all.css">
-    <link rel="stylesheet" href="css/stylesheet.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
-    <script src="https://use.fontawesome.com/34ba238c04.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, minimum-scale=1, initial-scale=1.0">
+  <title>To-do app</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/all.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+  <script src="https://use.fontawesome.com/34ba238c04.js"></script>
 </head>
 
 <body>
-    <div class="container app-area" id="todo-list">
-    <!--header-->
+  <div class="container app-area" id="todo-list">
+
+    <!--HEADER-->
     <div class="header container-fluid" id="header">
 
-        <div class="row px-2">
+      <div class="row px-2">
 
-          <div class="col-sm-1 col-1"></div>
+        <div class="col-sm-1 col-1"></div>
 
-          <div class="col-sm-3 col-3"><span class="link-secondary pointer" 
-            aria-current="page" 
-            href="#"
-            @click="clearTasks"
-            >Clear all</span></div>
+        <div class="col-sm-3 col-3">
+          <span class="link-light pointer float-start" aria-current="page" href="#"
+            @click="clearTasks">Clear all</span>
+          </div>
 
-            <div class="col-sm-5 col-4">
-              
-            </div>
-
-            <div class="col-sm-1 col-1 me-2">
-                <button class="button-sort-clear" 
-                @click="clearCompleted" 
-                v-show="completedTodos.length">
-                    <i class="fas fa-sync"></i>
-                </button>
-            </div>
-
-            <div class="col-sm-1 col-1 ms-2">
-                <button class="button-sort-clear" 
-                v-if="todoList.length"
-                @click="sortAbc"
-                >
-                    <i class="fas fa-sort-alpha-down"></i>
-                </button>
-            </div>
-            
-            <div class="col-sm-1 col-2"></div>
+        <div class="col-sm-5 col-4">
         </div>
 
-        <div id="date"></div>
-        <h4 class="text-center">My Tasks</h4>
+        <div class="col-sm-1 col-1 me-2">
 
-        <!--navbar-->
-        <nav class="navbar navbar-expand navbar-light bg-white">
-            <div class="container-fluid">
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link"
-                    href="#"
-                    @click="orderByPriority"
-                    ><i class="fas fa-long-arrow-alt-down fa-sm"></i> Priority</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" 
-                    aria-current="page" 
-                    href="#"
-                   @click="availableCategories=['work']"
-                    >Work</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" 
-                    href="#" 
-                    @click="availableCategories=['private']">Private</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" 
-                    href="#" 
-                    @click="availableCategories=['exercise']">Exercise</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" 
-                    href="#"
-                    @click="availableCategories=['work', 'private', 'exercise', 'select']"
-                    >All</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
+          <button class="button-sort-clear" @click="clearCompleted" v-show="completedTodos.length">
+            <i class="fas fa-sync"></i>
+          </button>
 
-    </div>
+        </div>
 
+        <div class="col-sm-1 col-1 ms-2">
 
-    
-        <span class="remaining-tasks"> 
-            <strong>{{ activeTodos.length }}</strong> remaining task(s) 
-        </span>
+          <button class="button-sort-clear" v-if="todoList.length" @click="sortAbc">
+            <i class="fas fa-sort-alpha-down"></i>
+          </button>
 
-        <!--TO-DO LIST-->
-        <div class="todo-list mx-0">
-            <ul id="list">
+        </div>
 
-                
-<li  v-for="(item, index) in filtered" :key="index">
-                    <div class="row mx-auto p-1" 
-                    :class="[{priority : item.status === 'high'}, 
-                    {medium : item.status === 'medium'}, {low : item.status === 'low'}]">
-    
-                        <div class="col-1 my-auto">
-                            <input type="checkbox" 
-                            name="completed" 
-                            class="custom-checkbox" 
-                            @click="toggleComplete(item)">       
-                        </div>
+        <div class="col-sm-1 col-2">
+        </div>
 
-                         <!--TASK DISPLAY-->  
-                        <div class="col-3"  
-                        :class="{complete : item.isComplete}">
-                      
-                           <input type="text" 
-                           class="mx-0 todo-style form-control-sm float-start" 
-                           :value="item.label"
-                           :disabled="isDisabled"                          
-                           :class="[{complete : item.isComplete}, 
-                           {priority : item.status === 'high'}, 
-                           {medium : item.status === 'medium'}, {low : item.status === 'low'}]"
-                           @click="startEditingTask(item)"                          
-                           @keyup.enter="finishEditing"
-                           @blur="finishEditing"
-                           @keyup.esc="cancelEditing"
-                          >  
+      </div>
 
-                        </div>
+      <div id="date"></div>
+      <h4 class="text-center">My Tasks</h4>
 
-                        <!--PRIORITY-->
-                          <div class="col-2">
-                            <span class="pointer"                         
-                            @click="changeStatus(index)">{{ firstCharUpper(item.status) }}</span>
-                          </div>
+      <!--NAVBAR-->
+      <nav class="navbar navbar-expand navbar-dark">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-                          <!--CATEGORY-->
-                          <div class="col-2">
+          <div class="collapse navbar-collapse" id="navbarNav">
 
-                            <span 
-                            class="pointer"
-                            @click="changeCategory(index)">
-                              {{ firstCharUpper(item.category) }}
-                            </span>
+            <ul class="navbar-nav">
 
-                          </div>
-                         
-                         <!--DATE PICKER-->
-                          <div class="col-2"> 
+              <li class="nav-item">
+                <a class="nav-link" href="#" @click="orderByPriority">
+                  <i class="fas fa-long-arrow-alt-down fa-sm"></i>
+                  Priority</a>
+              </li>
 
-                            <input v-model.lazy="newDate"                                     
-                            type="date" name="due-date" 
-                            class="date-picker form-control-sm"
-                            v-show="item.hasDate===false" 
-                            v-if="state==='showDatePicker'" 
-                            v-on:keyup.enter="addDate(item)"> 
-                            <span v-show="item.hasDate===true">{{item.date}}</span>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#" @click="availableCategories=['work']">Work</a>
+              </li>
 
-                         <button                   
-                           class="button-style-list"
-                           :class="[{priority : item.status === 'high'}, 
-                           {medium : item.status === 'medium'}, {low : item.status === 'low'}]"
-                           v-if="state==='showDateButton'"
-                           v-show="item.hasDate===false"
-                           @click="changeState('showDatePicker')"
-                           >
-                           <i class="far fa-calendar-alt"></i>
-                        </button> 
+              <li class="nav-item">
+                <a class="nav-link" href="#" @click="availableCategories=['private']">Private</a>
+              </li>
 
-                        </div>
+              <li class="nav-item">
+                <a class="nav-link" href="#" @click="availableCategories=['exercise']">Exercise</a>
+              </li>
 
-                        <!--DELETE-->
-                        <div class="col-1">
+              <li class="nav-item">
+                <a class="nav-link" href="#"
+                  @click="availableCategories=['work', 'private', 'exercise', 'category']">All</a>
+              </li>
 
-                          <button :class="[{priority : item.status === 'high'}, 
-                          {medium : item.status === 'medium'}, {low : item.status === 'low'}]" 
-                          class="button-style-list delete-button"                          
-                          @click="deleteTask(item)">
-                          <i class="far fa-trash-alt"></i>
-                          </button>
-
-                        </div>
-
-                        <div class="col-1">
-                        </div>
-  
-            
-            </div>
-
-                </li>
             </ul>
+
+          </div>
         </div>
+      </nav>
 
-      
-
-      <!--ADD-TO-DO SECTION-->
-      <div class="add-to-do mx-auto container-fluid">
-           
-        <div class="row mx-auto">
-
-            <div class="col-1"></div>
-
-            <div class="col-8">
-                <!--TASKINPUT-->
-                <input type="text" id="addTask" 
-            
-                class="input-style mx-auto form-control" 
-                v-model="newItem" 
-                v-on:keyup.enter="[saveItem($event), warningClasses]">
-              
-            </div>
-
-            <div class="col-2 my-auto">
-                <button @click="saveItem" :disabled="newItem.length===0" class="button-plus p-2">
-                    <i class="fas fa-plus white-plus"></i>
-                </button>
-            </div>
-
-            <div class="col-1"></div>
-
-        </div>
-       
     </div>
-   
-</div>
 
 
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-    <script src="scripts/scripts.js"></script>
+
+    <span class="remaining-tasks pt-3">
+      <strong>{{ activeTodos.length }}</strong> remaining task(s)
+    </span>
+
+    <!--TO-DO LIST-->
+    <div class="todo-list mx-0">
+      <ul id="list">
+
+
+        <li v-for="(item, index) in filtered" :key="index" :class="{complete : item.isComplete}">
+
+          <div class="row mx-auto my-auto py-2 p-1" :class="[{priority : item.status === 'high'}, 
+                    {medium : item.status === 'medium'}, 
+                    {low : item.status === 'low'}, {complete : item.isComplete}]">
+
+            <div class="col-1 my-auto">
+
+              <input type="checkbox" name="completed" class="custom-checkbox" @click="toggleComplete(item)">
+
+            </div>
+
+            <!--TASK DISPLAY-->
+            <div class="col-3" :class="{complete : item.isComplete}">
+
+              <input type="text" class="mx-0 todo-style float-start" :value="item.label" :class="[{complete : item.isComplete}, 
+                           {priority : item.status === 'high'}, 
+                           {medium : item.status === 'medium'}, 
+                           {low : item.status === 'low'}]" @click="startEditingTask(item)" @keyup.enter="finishEditing"
+                @blur="finishEditing" @keyup.esc="cancelEditing">
+                <!-- :disabled="editedTask===item"-->
+                
+            </div>
+
+            <!--PRIORITY-->
+            <div class="col-2">
+
+              <span class="pointer" @click="changeStatus(index)">{{ firstCharUpper(item.status) }}</span>
+
+            </div>
+
+            <!--CATEGORY-->
+            <div class="col-2">
+
+              <span class="pointer" @click="changeCategory(index)">
+                {{ firstCharUpper(item.category) }}
+              </span>
+
+            </div>
+
+            <!--DATE PICKER-->
+            <div class="col-2">
+
+              <input v-model.lazy="newDate" type="date" name="due-date" class="date-picker form-control-sm"
+                v-show="item.hasDate===false" v-if="state==='showDatePicker'" v-on:keyup.enter="addDate(item)">
+
+              <span v-show="item.hasDate===true">{{item.date}}</span>
+
+              <button class="button-style-list" :class="[{priority : item.status === 'high'}, 
+                           {medium : item.status === 'medium'}, {low : item.status === 'low'}, 
+                           {complete : item.isComplete}]" v-if="state==='showDateButton'" v-show="item.hasDate===false"
+                @click="changeState('showDatePicker')">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+
+            </div>
+
+            <!--DELETE-->
+            <div class="col-1">
+
+              <button :class="[{priority : item.status === 'high'}, 
+                          {medium : item.status === 'medium'}, {low : item.status === 'low'}, 
+                          {complete : item.isComplete}]" class="button-style-list delete-button"
+                @click="deleteTask(item)">
+                <i class="far fa-trash-alt"></i>
+              </button>
+
+            </div>
+
+            <div class="col-1">
+            </div>
+
+
+          </div>
+
+        </li>
+      </ul>
+    </div>
+
+
+
+    <!--ADD-TO-DO SECTION-->
+    <div class="add-to-do mx-auto container-fluid">
+
+      <div class="row mx-auto">
+
+        <div class="col-1"></div>
+
+        <div class="col-7 pe-2">
+
+          <!--TASKINPUT-->
+          <input type="text" id="addTask" class="input-style mx-auto form-control" v-model="newItem"
+            v-on:keyup.enter="[saveItem($event), warningClasses]">
+
+        </div>
+
+        <div class="col-1"></div>
+
+        <div class="col-2 my-auto">
+
+          <button @click="saveItem" :disabled="newItem.length===0" class="button-plus ps-2">
+            <i class="fas fa-plus white-plus"></i>
+          </button>
+          
+        </div>
+
+        <div class="col-1"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="scripts/scripts.js"></script>
 
 </body>
 
