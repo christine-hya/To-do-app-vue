@@ -1,3 +1,4 @@
+
 let myVue = new Vue({
     el: '#todo-list',
     data: {
@@ -12,7 +13,7 @@ let myVue = new Vue({
         availablePriorities: ['low', 'medium', 'high'],
         availableCategories: ['work', 'private', 'exercise', 'category']
     },
-
+    
     methods: {
             saveItem : function() {
                 if(this.newItem.length === 0) 
@@ -24,7 +25,8 @@ let myVue = new Vue({
                     hasDate: false,
                     isComplete: false,  
                     status: 'priority',
-                    category: 'category',                                              
+                    category: 'category', 
+                    isDisabled: true                                             
                     })
 
                 this.newItem = '';
@@ -53,17 +55,22 @@ let myVue = new Vue({
             },
 
             startEditingTask : function(item) {
-              this.isDisabled = !this.isDisabled;
-              this.editedTask = item;                            
+              let isDIndex = this.todoList.indexOf(item); 
+              this.todoList[isDIndex].isDisabled = false;
+              this.editedTask = item;  
+              console.log(this.todoList);                          
             },
             
             finishEditing : function(event) {
                     if (!this.editedTask) { return; }
-                    const textbox = event.target;
+                    const textbox = event.target;                    
                     this.editedTask.label = textbox.value;
                     this.editedTask.label = textbox.value.trim();
+
+                    this.editedTask.isDisabled = true;
                     this.editedTask = null;
-                    // this.isDisabled = !this.isDisabled;                    
+                    console.log(this.todoList);
+                                    
                   },    
 
             cancelEditing : function() {

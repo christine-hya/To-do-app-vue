@@ -130,7 +130,9 @@
               <input type="text" class="mx-0 todo-style float-start" :value="item.label" :class="[{complete : item.isComplete}, 
                            {priority : item.status === 'high'}, 
                            {medium : item.status === 'medium'}, 
-                           {low : item.status === 'low'}]" @click="startEditingTask(item)" @keyup.enter="finishEditing"
+                           {low : item.status === 'low'}]" 
+                           :disabled="isDisabled === false"
+                           @click="startEditingTask(item)" @keyup.enter="finishEditing"
                 @blur="finishEditing" @keyup.esc="cancelEditing">
                 <!-- :disabled="editedTask===item"-->
                 
@@ -158,7 +160,7 @@
               <input v-model.lazy="newDate" type="date" name="due-date" class="date-picker form-control-sm"
                 v-show="item.hasDate===false" v-if="state==='showDatePicker'" v-on:keyup.enter="addDate(item)">
 
-              <span v-show="item.hasDate===true">{{item.date}}</span>
+              <span v-show="item.hasDate===true"> {{ `${new Date(item.date)}`.substring(0,10) }}</span>
 
               <button class="button-style-list" :class="[{priority : item.status === 'high'}, 
                            {medium : item.status === 'medium'}, {low : item.status === 'low'}, 
