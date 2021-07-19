@@ -10,14 +10,23 @@ let myVue = new Vue({
         editedTask: null,
         isDisabled: true,
         date: null,
+        submitting: false,
+        error: false,
+        success: false,
         availablePriorities: ['low', 'medium', 'high'],
         availableCategories: ['work', 'private', 'exercise', 'category']
     },
     
     methods: {
             saveItem : function() {
+              this.submitting = true;
+              this.clearStatus()
                 if(this.newItem.length === 0) 
-                return ;
+                {this.error = true;              
+                return}   
+                
+              if (this.todoList.length > 8)
+              {return;}           
                 
                 this.todoList.push ({
                     label: this.newItem,
@@ -26,11 +35,19 @@ let myVue = new Vue({
                     isComplete: false,  
                     status: 'priority',
                     category: 'category', 
-                    isDisabled: true                                             
+                    isDisabled: true,
+                    state: 'showDateButton'                                             
                     })
+                    this.error = false;
+                    this.success = true;
+                    this.submitting = false;    
 
-                this.newItem = '';
-                this.changeState('showDateButton');                
+                    this.newItem = '';               
+            },
+
+            clearStatus() {
+              this.success = false
+              this.error = false
             },
 
             toggleComplete : function(item) {
@@ -42,8 +59,8 @@ let myVue = new Vue({
                  this.todoList.splice(index, 1);
              },
 
-            changeState : function(newState) {
-                this.state = newState;
+            changeState : function(newState, item) {
+                item.state = newState;
             },
 
             addDate : function(item) {
@@ -55,10 +72,7 @@ let myVue = new Vue({
             },
 
             startEditingTask : function(item) {
-              let isDIndex = this.todoList.indexOf(item); 
-              this.todoList[isDIndex].isDisabled = false;
-              this.editedTask = item;  
-              console.log(this.todoList);                          
+              this.editedTask = item;                                        
             },
             
             finishEditing : function(event) {
@@ -67,10 +81,8 @@ let myVue = new Vue({
                     this.editedTask.label = textbox.value;
                     this.editedTask.label = textbox.value.trim();
 
-                    this.editedTask.isDisabled = true;
                     this.editedTask = null;
-                    console.log(this.todoList);
-                                    
+                    textbox.blur();                                    
                   },    
 
             cancelEditing : function() {
@@ -82,15 +94,15 @@ let myVue = new Vue({
                   },
             
             changeStatus : function (index) {
-                let newIndex = this.availablePriorities.indexOf(this.todoList[index].status);
+                let newIndex = this.availablePriorities.indexOf(this.filtered[index].status);
                 if(++newIndex > 2) newIndex = 0;
-                this.todoList[index].status = this.availablePriorities[newIndex];
+                this.filtered[index].status = this.availablePriorities[newIndex];
             },
             
             changeCategory : function (index) {
-              let newCIndex = this.availableCategories.indexOf(this.todoList[index].category);
+              let newCIndex = this.availableCategories.indexOf(this.filtered[index].category);
               if(++newCIndex > 2) newCIndex = 0;
-              this.todoList[index].category = this.availableCategories[newCIndex];
+              this.filtered[index].category = this.availableCategories[newCIndex];
             },
 
             firstCharUpper : function (str) {
@@ -143,11 +155,9 @@ let myVue = new Vue({
                      
         },    
 
-        warningClasses() {
-            return {
-            'border' : this.newItem.length===0,
-            'border-danger' : this.newItem.length===0,
-            'border-4' : this.newItem.length===0,
+        invalidTask() {
+             {
+              return this.newItem === '';
           }
         }
       },

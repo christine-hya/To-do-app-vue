@@ -131,26 +131,34 @@
                            {priority : item.status === 'high'}, 
                            {medium : item.status === 'medium'}, 
                            {low : item.status === 'low'}]" 
-                           :disabled="isDisabled === false"
+                          
                            @click="startEditingTask(item)" @keyup.enter="finishEditing"
                 @blur="finishEditing" @keyup.esc="cancelEditing">
-                <!-- :disabled="editedTask===item"-->
+                <!-- :disabled="editedTask===null"-->
                 
             </div>
 
             <!--PRIORITY-->
             <div class="col-2">
 
-              <span class="pointer" @click="changeStatus(index)">{{ firstCharUpper(item.status) }}</span>
+              <button class="pointer category-button" @click="changeStatus(index)"
+              :class="[{priority : item.status === 'high'}, 
+                           {medium : item.status === 'medium'}, {low : item.status === 'low'}, 
+                           {complete : item.isComplete}]"
+              >{{ firstCharUpper(item.status) }}</button>
 
             </div>
 
             <!--CATEGORY-->
             <div class="col-2">
 
-              <span class="pointer" @click="changeCategory(index)">
+              <button class="pointer category-button" @click="changeCategory(index)" :disabled="availableCategories.length===1"
+              :class="[{priority : item.status === 'high'}, 
+                           {medium : item.status === 'medium'}, {low : item.status === 'low'}, 
+                           {complete : item.isComplete}]"
+              >
                 {{ firstCharUpper(item.category) }}
-              </span>
+              </button>
 
             </div>
 
@@ -158,14 +166,14 @@
             <div class="col-2">
 
               <input v-model.lazy="newDate" type="date" name="due-date" class="date-picker form-control-sm"
-                v-show="item.hasDate===false" v-if="state==='showDatePicker'" v-on:keyup.enter="addDate(item)">
+                v-show="item.hasDate===false" v-if="item.state==='showDatePicker'" v-on:keyup.enter="addDate(item)">
 
-              <span v-show="item.hasDate===true"> {{ `${new Date(item.date)}`.substring(0,10) }}</span>
+              <span class="date-display" v-show="item.hasDate===true"> {{ `${new Date(item.date)}`.substring(0,10) }}</span>
 
               <button class="button-style-list" :class="[{priority : item.status === 'high'}, 
                            {medium : item.status === 'medium'}, {low : item.status === 'low'}, 
-                           {complete : item.isComplete}]" v-if="state==='showDateButton'" v-show="item.hasDate===false"
-                @click="changeState('showDatePicker')">
+                           {complete : item.isComplete}]" v-if="item.state==='showDateButton'" v-show="item.hasDate===false"
+                @click="changeState('showDatePicker', item)">
                 <i class="far fa-calendar-alt"></i>
               </button>
 
@@ -205,8 +213,11 @@
         <div class="col-7 pe-2">
 
           <!--TASKINPUT-->
-          <input type="text" id="addTask" class="input-style mx-auto form-control" v-model="newItem"
-            v-on:keyup.enter="[saveItem($event), warningClasses]">
+          <input type="text" id="addTask" 
+          class="input-style mx-auto form-control" 
+          v-model="newItem"
+          :class="{ 'border-danger': submitting && invalidTask }"
+          v-on:keyup.enter="saveItem">
 
         </div>
 
@@ -214,7 +225,7 @@
 
         <div class="col-2 my-auto">
 
-          <button @click="saveItem" :disabled="newItem.length===0" class="button-plus ps-2">
+          <button @click="saveItem" class="button-plus ps-2" :disabled="todoList.length > 8">
             <i class="fas fa-plus white-plus"></i>
           </button>
           

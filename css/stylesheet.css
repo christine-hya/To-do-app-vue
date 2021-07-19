@@ -132,6 +132,16 @@ i {
     float: right;
 }
 
+.date-display {
+    font-size: smaller;
+}
+
+.category-button {
+    border: none;
+    background-color: transparent;
+    font-size: smaller;
+}
+
 .button-plus {
     background-color: #5D576B; 
     border-radius: 50%;
@@ -195,11 +205,6 @@ button:hover {
     text-decoration: line-through;
     color: #6c757d!important;
     background-color: white!important;
-}
-
-.warning {
-    border: #FF3562;
-    border-width: 10px;
 }
 
 .priority {
