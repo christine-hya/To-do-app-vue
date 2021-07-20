@@ -20,13 +20,13 @@ let myVue = new Vue({
     methods: {
             saveItem : function() {
               this.submitting = true;
-              this.clearStatus()
+              this.clearStatus();
                 if(this.newItem.length === 0) 
                 {this.error = true;              
-                return}   
+                return;}   
                 
-              if (this.todoList.length > 8)
-              {return;}           
+                if (this.todoList.length > 7)
+                {return;}           
                 
                 this.todoList.push ({
                     label: this.newItem,
@@ -38,6 +38,8 @@ let myVue = new Vue({
                     isDisabled: true,
                     state: 'showDateButton'                                             
                     })
+
+                    this.availableCategories=['work', 'private', 'exercise', 'category'];
                     this.error = false;
                     this.success = true;
                     this.submitting = false;    
@@ -45,9 +47,9 @@ let myVue = new Vue({
                     this.newItem = '';               
             },
 
-            clearStatus() {
-              this.success = false
-              this.error = false
+            clearStatus: function() {
+              this.success = false;
+              this.error = false;
             },
 
             toggleComplete : function(item) {
@@ -72,28 +74,28 @@ let myVue = new Vue({
             },
 
             startEditingTask : function(item) {
-              this.editedTask = item;                                        
+                this.editedTask = item;                                        
             },
             
             finishEditing : function(event) {
-                    if (!this.editedTask) { return; }
+                if (!this.editedTask) { return; }
                     const textbox = event.target;                    
                     this.editedTask.label = textbox.value;
                     this.editedTask.label = textbox.value.trim();
 
                     this.editedTask = null;
                     textbox.blur();                                    
-                  },    
+            },    
 
             cancelEditing : function() {
                 this.editedTask = null;
-                  },
+            },
 
             clearCompleted : function() {
-                    this.todoList = this.activeTodos;
-                  },
+                this.todoList = this.activeTodos;
+            },
             
-            changeStatus : function (index) {
+            changePriority : function (index) {
                 let newIndex = this.availablePriorities.indexOf(this.filtered[index].status);
                 if(++newIndex > 2) newIndex = 0;
                 this.filtered[index].status = this.availablePriorities[newIndex];
@@ -109,27 +111,20 @@ let myVue = new Vue({
                 return str.charAt(0).toUpperCase() + str.slice(1);
             },
 
-            convertDate : function (duedate) {
-              const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(duedate);
-              const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(duedate);
-              duedate = `${da} ${mo}`;
-            }, 
-
             sortAbc : function () {
               this.todoList.sort((a, b) => a.label.localeCompare(b.label));
               console.log(this.todoList);
             },
            
             orderByPriority: function () {
+              let priorities = 
+              {'high' : 0, 
+              'medium' : 1,
+              'low' : 2,
+              'priority' : 3}
 
-            let priorities = 
-            {'high' : 0, 
-            'medium' : 1,
-            'low' : 2,}
-
-            this.todoList.sort((a, b) =>
-            priorities[a.status] - priorities[b.status]);
-             
+              this.todoList.sort((a, b) =>
+              priorities[a.status] - priorities[b.status]);             
             },   
             
             clearTasks: function () {
@@ -151,15 +146,12 @@ let myVue = new Vue({
            let availableCategories = this.availableCategories;
            return this.todoList.filter(function(item) {
            return availableCategories.indexOf(item.category) >= 0;
-           });
-                     
+           });                     
         },    
 
         invalidTask() {
-             {
-              return this.newItem === '';
-          }
-        }
+          return this.newItem === '';
+          },                  
       },
 
       watch: {
